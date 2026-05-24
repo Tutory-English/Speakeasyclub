@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpeakEasy ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --coral:  #FF7D59;
+  --pink:   #FFBDE8;
+  --green:  #D1D161;
+  --blue:   #99B0ED;
+  --yellow: #FFDE94;
+  --peach:  #FAAB94;
+  --cream:  #FFFAED;
+  --navy:   #2C2C34;
+  --lblue:  #CDDBF9;
+  --lpink:  #FFE5E0;
+
+  --bg:     #FFFAED;
+  --card:   #FFFFFF;
+  --border: #F0D8E8;
+  --text:   #2C2C34;
+  --muted:  #9A7A8A;
+  --shadow: 0 4px 28px rgba(255,125,89,.12);
+  --r:      20px;
+  --r-sm:   12px;
+  --font:   'Poppins', sans-serif;
+}
+[data-theme="dark"] {
+  --bg:    #1E1A2B;
+  --card:  #2F2A40;
+  --border:#4A3F5C;
+  --text:  #FAF0FF;
+  --muted: #B8A8CC;
+  --shadow:0 4px 28px rgba(0,0,0,.4);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s}
+
+/* screens */
+.screen{display:none;animation:fadeIn .3s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── HEADER ── */
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:15px 28px;background:var(--card);
+  border-bottom:2px solid var(--border);
+  position:sticky;top:0;z-index:100;
+  transition:background .3s,border-color .3s;
+}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.3rem;color:var(--coral)}
+.logo-dot{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--coral),var(--pink));display:flex;align-items:center;justify-content:center;font-size:1rem}
+.logo-sub{font-size:.62rem;font-weight:500;color:var(--muted);letter-spacing:.2px;display:block;line-height:1}
+.toggle-btn{background:var(--border);border:none;padding:7px 16px;border-radius:30px;font-size:.8rem;font-weight:600;cursor:pointer;color:var(--text);font-family:var(--font);transition:all .2s}
+.toggle-btn:hover{background:var(--pink);color:var(--navy)}
+[data-theme="dark"] .toggle-btn:hover{background:var(--blue);color:var(--navy)}
+
+.back-btn{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:2px solid var(--border);padding:8px 16px;border-radius:30px;font-size:.82rem;font-weight:600;cursor:pointer;color:var(--muted);font-family:var(--font);transition:all .2s}
+.back-btn:hover{border-color:var(--coral);color:var(--coral)}
+
+/* ── HOME ── */
+#home{max-width:860px;margin:0 auto;padding:44px 24px}
+.hero{text-align:center;padding:28px 0 44px}
+.hero-title{font-size:2.5rem;font-weight:800;line-height:1.2;margin-bottom:14px}
+.hi{color:var(--coral)} .hi2{color:var(--blue)}
+.hero-sub{font-size:.98rem;color:var(--muted);line-height:1.7;max-width:460px;margin:0 auto 12px}
+.hero-tag{display:inline-block;background:var(--pink);color:var(--coral);font-size:.72rem;font-weight:700;padding:5px 14px;border-radius:30px;margin-top:6px;letter-spacing:.4px}
+[data-theme="dark"] .hero-tag{background:#4A2A3A;color:var(--pink)}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:540px){.mode-grid{grid-template-columns:1fr}}
+.mode-card{background:var(--card);border-radius:var(--r);padding:32px 26px;cursor:pointer;border:2.5px solid var(--border);box-shadow:var(--shadow);transition:all .22s;text-align:left;position:relative;overflow:hidden}
+.mode-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(255,125,89,.18)}
+.mode-card.solo{border-top:5px solid var(--coral)}
+.mode-card.peer{border-top:5px solid var(--blue)}
+.mode-card .m-icon{font-size:2.4rem;margin-bottom:14px;display:block}
+.mode-card h2{font-size:1.15rem;font-weight:700;margin-bottom:8px}
+.mode-card p{font-size:.86rem;color:var(--muted);line-height:1.6}
+.mode-tag{display:inline-block;margin-top:16px;font-size:.7rem;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.3px}
+.solo .mode-tag{background:var(--lpink);color:var(--coral)}
+.peer .mode-tag{background:var(--lblue);color:#5B7AE0}
+[data-theme="dark"] .solo .mode-tag{background:#3A2020;color:var(--peach)}
+[data-theme="dark"] .peer .mode-tag{background:#1E2A3A;color:var(--blue)}
+
+/* ── SETUP ── */
+#setup{max-width:540px;margin:0 auto;padding:32px 24px}
+.setup-top{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.setup-card{background:var(--card);border-radius:var(--r);padding:34px 30px;box-shadow:var(--shadow);border:2px solid var(--border)}
+.setup-card h2{font-size:1.35rem;font-weight:700;margin-bottom:6px}
+.setup-card .sub{color:var(--muted);font-size:.86rem;margin-bottom:26px}
+.fl{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px}
+.fg{margin-bottom:24px}
+.chip-row{display:flex;flex-wrap:wrap;gap:10px}
+.chip{padding:9px 18px;border-radius:30px;border:2px solid var(--border);font-size:.86rem;font-weight:600;cursor:pointer;background:var(--card);color:var(--muted);transition:all .15s;font-family:var(--font)}
+.chip.active,.chip:hover{border-color:var(--coral);background:var(--lpink);color:var(--coral)}
+[data-theme="dark"] .chip.active,[data-theme="dark"] .chip:hover{background:#3A2020;border-color:var(--peach);color:var(--peach)}
+.pm-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pm-chip{padding:18px 14px;border-radius:var(--r-sm);border:2.5px solid var(--border);cursor:pointer;text-align:center;background:var(--card);transition:all .15s}
+.pm-chip .pm-icon{font-size:1.5rem;margin-bottom:8px}
+.pm-chip h3{font-size:.86rem;font-weight:700}
+.pm-chip p{font-size:.73rem;color:var(--muted);margin-top:4px;line-height:1.4}
+.pm-chip.active,.pm-chip:hover{border-color:var(--blue);background:var(--lblue)}
+[data-theme="dark"] .pm-chip.active,[data-theme="dark"] .pm-chip:hover{background:#1E2A3A;border-color:var(--blue)}
+.cta{width:100%;padding:15px;border-radius:var(--r-sm);border:none;background:var(--coral);color:#fff;font-size:.98rem;font-weight:700;cursor:pointer;margin-top:6px;transition:all .2s;font-family:var(--font);letter-spacing:.2px}
+.cta:hover{background:#E56A47;transform:translateY(-1px)}
+
+/* ── LOTTERY ── */
+#lottery{max-width:600px;margin:0 auto;padding:32px 24px;text-align:center}
+.lottery-top{display:flex;align-items:center;gap:14px;margin-bottom:28px;text-align:left}
+.lottery-title{font-size:1.5rem;font-weight:700;margin-bottom:4px}
+.lottery-sub{font-size:.86rem;color:var(--muted)}
+
+/* LOTTERY CARD — gradient like the Coffeeman screenshot */
+.spin-wrap{
+  border-radius:var(--r);padding:44px 32px 40px;
+  background:linear-gradient(135deg,#FFBA94 0%,#FF7D59 45%,#FF5C7A 100%);
+  margin-bottom:24px;
+  position:relative;overflow:hidden;
+  min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  box-shadow:0 12px 40px rgba(255,125,89,.35);
+}
+.spin-wrap::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 70% 20%,rgba(255,255,255,.18) 0%,transparent 60%);
+  pointer-events:none;
+}
+.spin-badge{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:5px 14px;border-radius:20px;background:rgba(255,255,255,.25);color:#fff;backdrop-filter:blur(4px)}
+.spin-q-label{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.7);display:none}
+.spin-text{
+  font-size:1.2rem;font-weight:600;line-height:1.55;
+  color:#fff;text-align:center;max-width:480px;
+  min-height:72px;display:none;align-items:center;justify-content:center;
+  text-shadow:0 1px 8px rgba(0,0,0,.12);
+}
+.spin-text.revealed{animation:popIn .55s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popIn{0%{transform:scale(.75);opacity:0}100%{transform:scale(1);opacity:1}}
+.spin-loader{width:46px;height:46px;border:4px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:rot .7s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.spin-sparkle{font-size:1.6rem;display:none;animation:rot 1.2s linear infinite}
+.spin-sparkle.show{display:block}
+.spin-btn{padding:14px 38px;border-radius:30px;border:none;background:#fff;color:var(--coral);font-size:.98rem;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .2s;letter-spacing:.2px;display:none;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.spin-btn.show{display:inline-block}
+.spin-btn:hover{transform:scale(1.04);box-shadow:0 6px 24px rgba(0,0,0,.18)}
+
+/* ── PRACTICE ── */
+#practice{max-width:700px;margin:0 auto;padding:28px 24px}
+.prac-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.prac-meta{display:flex;align-items:center;gap:10px}
+.prac-badge{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:5px 14px;border-radius:20px;background:var(--lpink);color:var(--coral)}
+.qnum{font-size:.84rem;font-weight:600;color:var(--muted)}
+
+/* Question hero card */
+.q-hero{
+  border-radius:var(--r);padding:36px 32px;margin-bottom:20px;
+  background:linear-gradient(135deg,#FFBA94 0%,#FF7D59 50%,#FF5C7A 100%);
+  position:relative;overflow:hidden;
+  box-shadow:0 8px 32px rgba(255,125,89,.3);
+}
+.q-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 10%,rgba(255,255,255,.2) 0%,transparent 55%);pointer-events:none}
+.q-cat-pill{display:inline-block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:4px 12px;border-radius:20px;background:rgba(255,255,255,.25);color:#fff;margin-bottom:14px;backdrop-filter:blur(4px)}
+.q-text{font-size:1.3rem;font-weight:600;line-height:1.5;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.1)}
+
+/* ── BIG COUNTDOWN TIMER ── */
+.timer-card{
+  border-radius:var(--r);overflow:hidden;margin-bottom:20px;
+  box-shadow:var(--shadow);border:2px solid var(--border);
+}
+.timer-phase-bar{
+  padding:12px 24px;
+  background:var(--card);
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:2px solid var(--border);
+}
+.timer-phase-bar .ph-lbl{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
+.timer-phase-bar .ph-state{font-size:.72rem;font-weight:600;color:var(--muted)}
+
+/* The gradient timer face */
+.timer-face{
+  padding:40px 32px 36px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  transition:background .5s;
+}
+.timer-face.ph-prep{background:linear-gradient(135deg,#FFDE94,#FFBA60)}
+.timer-face.ph-speak{background:linear-gradient(135deg,#D1D161,#99CC66)}
+.timer-face.ph-done{background:linear-gradient(135deg,#FFBDE8,#FF7D59)}
+.timer-face.ph-idle{background:linear-gradient(135deg,#CDDBF9,#99B0ED)}
+[data-theme="dark"] .timer-face.ph-idle{background:linear-gradient(135deg,#2A2A4A,#3A3A5A)}
+
+.timer-digits{
+  display:flex;align-items:flex-start;gap:0;
+}
+.t-unit{display:flex;flex-direction:column;align-items:center;min-width:90px}
+.t-num{
+  font-size:5rem;font-weight:800;color:#fff;
+  line-height:1;letter-spacing:-2px;
+  text-shadow:0 2px 16px rgba(0,0,0,.15);
+}
+.t-label{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.75);margin-top:6px}
+.t-colon{
+  font-size:4.6rem;font-weight:800;color:rgba(255,255,255,.8);
+  line-height:1;padding:0 4px;margin-top:2px;
+  animation:blink 1s step-end infinite;
+}
+.t-colon.no-blink{animation:none}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.ph-done .t-num{font-size:3.5rem;letter-spacing:-1px}
+
+.timer-actions{
+  background:var(--card);padding:18px 24px;
+  display:flex;gap:10px;border-top:2px solid var(--border);
+}
+
+/* global btn */
+.btn{flex:1;padding:13px;border-radius:var(--r-sm);border:none;font-size:.9rem;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .2s}
+.btn-pri{background:var(--coral);color:#fff}.btn-pri:hover{background:#E56A47}
+.btn-out{background:transparent;color:var(--muted);border:2.5px solid var(--border)}.btn-out:hover{border-color:var(--coral);color:var(--coral)}
+.btn-grn{background:var(--green);color:var(--navy)}.btn-grn:hover{background:#BAB94F}
+.btn-red{background:#E55A5A;color:#fff}.btn-red:hover{background:#CC4444}
+.btn-blue{background:var(--blue);color:var(--navy)}.btn-blue:hover{background:#809DD8}
+
+.action-row{display:flex;gap:10px;margin-top:0}
+
+/* ── PEER SETUP ── */
+#peer-setup{max-width:780px;margin:0 auto;padding:32px 24px}
+.ps-top{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.ps-title{font-size:1.4rem;font-weight:700;margin-bottom:4px}
+.ps-sub{font-size:.84rem;color:var(--muted)}
+.topic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+@media(max-width:580px){.topic-grid{grid-template-columns:1fr 1fr}}
+.topic-card{background:var(--card);border-radius:var(--r);padding:22px 18px;border:2.5px solid var(--border);cursor:pointer;transition:all .2s;box-shadow:var(--shadow);text-align:center}
+.topic-card:hover{transform:translateY(-3px);border-color:var(--blue);box-shadow:0 10px 30px rgba(153,176,237,.25)}
+.tc-icon{font-size:2rem;margin-bottom:10px}
+.tc-name{font-size:.9rem;font-weight:700}
+.tc-count{font-size:.7rem;color:var(--muted);margin-top:4px}
+
+/* ── PEER PRACTICE ── */
+#peer-practice{max-width:760px;margin:0 auto;padding:28px 24px}
+.pp-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.topic-hero{
+  border-radius:var(--r);padding:28px 30px;margin-bottom:18px;
+  background:linear-gradient(135deg,#99B0ED,#CDDBF9 60%,#FFBDE8);
+  box-shadow:0 8px 30px rgba(153,176,237,.3);
+  position:relative;overflow:hidden;
+}
+[data-theme="dark"] .topic-hero{background:linear-gradient(135deg,#2A3A5C,#3A2A4C)}
+.topic-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(255,255,255,.25) 0%,transparent 60%);pointer-events:none}
+.th-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(44,44,52,.6);margin-bottom:8px}
+[data-theme="dark"] .th-lbl{color:rgba(250,240,255,.5)}
+.th-title{font-size:1.3rem;font-weight:700;color:var(--navy);margin-bottom:6px}
+[data-theme="dark"] .th-title{color:#FAF0FF}
+.th-desc{font-size:.84rem;color:rgba(44,44,52,.65);line-height:1.55}
+[data-theme="dark"] .th-desc{color:rgba(250,240,255,.55)}
+
+.turn-strip{border-radius:var(--r-sm);padding:12px 18px;margin-bottom:14px;font-weight:600;font-size:.88rem;display:flex;align-items:center;gap:10px}
+.ts-host{background:var(--lblue);color:#4A6AD4;border-left:4px solid var(--blue)}
+.ts-speaker{background:var(--lpink);color:var(--coral);border-left:4px solid var(--coral)}
+.ts-discuss{background:var(--pink);color:#C45B8A;border-left:4px solid #E88ABF}
+[data-theme="dark"] .ts-host{background:#1E2A3A;color:var(--blue)}
+[data-theme="dark"] .ts-speaker{background:#3A1E1E;color:var(--peach)}
+[data-theme="dark"] .ts-discuss{background:#3A1E2E;color:var(--pink)}
+
+.q-list{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.q-item{background:var(--card);border-radius:var(--r-sm);padding:16px 18px;border:2.5px solid var(--border);display:flex;align-items:flex-start;gap:14px;transition:all .2s;box-shadow:var(--shadow)}
+.q-item.active{border-color:var(--coral);background:var(--lpink)}
+.q-item.done-q{border-color:var(--green);opacity:.6}
+[data-theme="dark"] .q-item.active{background:#3A1E1E;border-color:var(--peach)}
+.q-num{min-width:28px;height:28px;border-radius:50%;background:var(--border);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;margin-top:1px;flex-shrink:0}
+.q-item.active .q-num{background:var(--coral);color:#fff}
+.q-item.done-q .q-num{background:var(--green);color:var(--navy)}
+.q-item-text{font-size:.92rem;font-weight:600;line-height:1.5}
+
+/* ── DONE ── */
+#done{max-width:500px;margin:0 auto;padding:48px 24px;text-align:center}
+.done-card{background:var(--card);border-radius:var(--r);padding:44px 32px;box-shadow:var(--shadow);border:2.5px solid var(--border);margin-bottom:22px}
+.done-icon{font-size:3.5rem;margin-bottom:18px}
+.done-card h2{font-size:1.5rem;font-weight:700;margin-bottom:10px}
+.done-card p{color:var(--muted);line-height:1.7;font-size:.9rem}
+.stats-row{display:flex;justify-content:center;gap:28px;margin:20px 0}
+.stat-num{font-size:2rem;font-weight:800;color:var(--coral)}
+.stat-lbl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot">🎙</div>
+    <div>SpeakEasy<span class="logo-sub">make your english speaking become easy</span></div>
+  </div>
+  <button class="toggle-btn" onclick="toggleDark()">🌙 Dark</button>
+</header>
+
+<!-- ════ HOME ════ -->
+<div id="home" class="screen active">
+  <div id="home-inner" style="max-width:860px;margin:0 auto;padding:44px 24px">
+    <div class="hero">
+      <div class="hero-title">Your daily<br><span class="hi">speaking</span> <span class="hi2">practice</span> ✨</div>
+      <p class="hero-sub">Spin for a random topic, practise with a timer, and level up your English — solo or with a friend!</p>
+      <span class="hero-tag">🇬🇧 IELTS · General · Academic</span>
+    </div>
+    <div class="mode-grid">
+      <div class="mode-card solo" onclick="goSetup('solo')">
+        <span class="m-icon">🎯</span>
+        <h2>Solo Practice</h2>
+        <p>Spin the wheel, get a random topic, prepare 1 minute, then speak for 2 minutes. Great for daily drill!</p>
+        <span class="mode-tag">1 player</span>
+      </div>
+      <div class="mode-card peer" onclick="goPeerSetup()">
+        <span class="m-icon">🎙️</span>
+        <h2>Peer Podcast</h2>
+        <p>Choose a topic pack with multiple questions. Practise like a real podcast — interview or discussion style.</p>
+        <span class="mode-tag">2 players</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ SOLO SETUP ════ -->
+<div id="setup" class="screen">
+  <div style="max-width:540px;margin:0 auto;padding:32px 24px">
+    <div class="setup-top">
+      <button class="back-btn" onclick="goHome()">← Back</button>
+      <div><div style="font-weight:700;font-size:.98rem">Solo Practice</div><div style="font-size:.8rem;color:var(--muted)">Pick a category, then spin!</div></div>
+    </div>
+    <div class="setup-card">
+      <h2>Choose Category 🎲</h2>
+      <p class="sub">Pick what you want to practise. You'll spin to get your topic!</p>
+      <div class="fg">
+        <div class="fl">Topic Category</div>
+        <div class="chip-row">
+          <div class="chip active" data-cat="all" onclick="selCat(this)">🎲 All Topics</div>
+          <div class="chip" data-cat="ielts" onclick="selCat(this)">📝 IELTS</div>
+          <div class="chip" data-cat="general" onclick="selCat(this)">💬 General</div>
+          <div class="chip" data-cat="academic" onclick="selCat(this)">🎓 Academic</div>
+        </div>
+      </div>
+      <button class="cta" onclick="goLottery()">🎰 Spin My Topic →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ LOTTERY ════ -->
+<div id="lottery" class="screen">
+  <div style="max-width:600px;margin:0 auto;padding:32px 24px;text-align:center">
+    <div class="lottery-top">
+      <button class="back-btn" onclick="goHome()">← Back</button>
+      <div>
+        <div class="lottery-title">🎰 Spinning your topic…</div>
+        <div class="lottery-sub">Wait for your random question!</div>
+      </div>
+    </div>
+    <div class="spin-wrap">
+      <div class="spin-loader" id="spin-loader"></div>
+      <div class="spin-badge" id="spin-badge" style="display:none"></div>
+      <div class="spin-q-label" id="spin-q-label">Your question is:</div>
+      <div class="spin-text" id="spin-text"></div>
+      <div class="spin-sparkle" id="spin-sparkle">✨</div>
+    </div>
+    <button class="spin-btn" id="spin-btn" onclick="startSolo()">Let's Go! →</button>
+  </div>
+</div>
+
+<!-- ════ SOLO PRACTICE ════ -->
+<div id="practice" class="screen">
+  <div style="max-width:680px;margin:0 auto;padding:28px 24px">
+    <div class="prac-top">
+      <div class="prac-meta">
+        <button class="back-btn" onclick="confirmBack()">← Back</button>
+        <span class="prac-badge">🎯 Solo</span>
+      </div>
+      <span class="qnum" id="qnum">Q 1</span>
+    </div>
+
+    <!-- Question as hero -->
+    <div class="q-hero">
+      <div class="q-cat-pill" id="q-cat">IELTS</div>
+      <p class="q-text" id="q-text">Your question appears here</p>
+    </div>
+
+    <!-- Big countdown timer -->
+    <div class="timer-card">
+      <div class="timer-phase-bar">
+        <span class="ph-lbl" id="phase-lbl">GET READY</span>
+        <span class="ph-state" id="phase-state">Press Start Prep to begin</span>
+      </div>
+      <div class="timer-face ph-idle" id="timer-face">
+        <div class="timer-digits">
+          <div class="t-unit">
+            <div class="t-num" id="t-min">01</div>
+            <div class="t-label">Minutes</div>
+          </div>
+          <div class="t-colon" id="t-colon">:</div>
+          <div class="t-unit">
+            <div class="t-num" id="t-sec">00</div>
+            <div class="t-label">Seconds</div>
+          </div>
+        </div>
+      </div>
+      <div class="timer-actions" id="solo-actions">
+        <button class="btn btn-out" id="btn-skip" onclick="skipPhase()">Skip Phase</button>
+        <button class="btn btn-pri" id="btn-main" onclick="startPrep()">▶ Start Prep</button>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-out" onclick="endSession()">✕ End Session</button>
+      <button class="btn btn-grn" id="btn-next" onclick="nextQ()" style="display:none">Next Question →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ PEER TOPIC SELECT ════ -->
+<div id="peer-setup" class="screen">
+  <div style="max-width:780px;margin:0 auto;padding:32px 24px">
+    <div class="ps-top">
+      <button class="back-btn" onclick="goHome()">← Back</button>
+      <div>
+        <div class="ps-title">🎙 Peer Podcast</div>
+        <div class="ps-sub">Choose a topic pack — each pack has 4 questions</div>
+      </div>
+    </div>
+    <div class="fg">
+      <div class="fl">Podcast Style</div>
+      <div class="pm-row" style="max-width:420px">
+        <div class="pm-chip active" data-pmode="interview" onclick="selPMode(this)">
+          <div class="pm-icon">🎤</div><h3>Interview</h3><p>Host asks, guest answers — then swap</p>
+        </div>
+        <div class="pm-chip" data-pmode="discussion" onclick="selPMode(this)">
+          <div class="pm-icon">💬</div><h3>Discussion</h3><p>Both respond to each question</p>
+        </div>
+      </div>
+    </div>
+    <div class="fl" style="margin-top:8px">Choose a Topic Pack</div>
+    <div class="topic-grid" id="topic-grid"></div>
+  </div>
+</div>
+
+<!-- ════ PEER PRACTICE ════ -->
+<div id="peer-practice" class="screen">
+  <div style="max-width:740px;margin:0 auto;padding:28px 24px">
+    <div class="pp-top">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="back-btn" onclick="confirmBackPeer()">← Back</button>
+        <span class="prac-badge" style="background:var(--lblue);color:#4A6AD4">🎙 Podcast</span>
+      </div>
+      <span class="qnum" id="peer-qnum">Q 1 / 4</span>
+    </div>
+
+    <!-- Topic hero -->
+    <div class="topic-hero">
+      <div class="th-lbl">🎙 Now Discussing</div>
+      <div class="th-title" id="topic-title">Topic Name</div>
+      <div class="th-desc" id="topic-desc">Topic description</div>
+    </div>
+
+    <div class="turn-strip" id="turn-strip">🎤 Speaker A's turn</div>
+
+    <div class="q-list" id="peer-q-list"></div>
+
+    <!-- Big timer for peer -->
+    <div class="timer-card">
+      <div class="timer-phase-bar">
+        <span class="ph-lbl" id="peer-phase-lbl">GET READY</span>
+        <span class="ph-state" id="peer-phase-state">Press Start Prep to begin</span>
+      </div>
+      <div class="timer-face ph-idle" id="peer-timer-face">
+        <div class="timer-digits">
+          <div class="t-unit">
+            <div class="t-num" id="peer-t-min">01</div>
+            <div class="t-label">Minutes</div>
+          </div>
+          <div class="t-colon" id="peer-t-colon">:</div>
+          <div class="t-unit">
+            <div class="t-num" id="peer-t-sec">00</div>
+            <div class="t-label">Seconds</div>
+          </div>
+        </div>
+      </div>
+      <div class="timer-actions">
+        <button class="btn btn-out" onclick="peerSkip()">Skip Phase</button>
+        <button class="btn btn-pri" id="peer-btn-main" onclick="peerStartPrep()">▶ Start Prep</button>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-out" onclick="endSession()">✕ End Session</button>
+      <button class="btn btn-blue" id="peer-btn-next" onclick="peerNext()" style="display:none">Next Question →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ DONE ════ -->
+<div id="done" class="screen">
+  <div class="done-card">
+    <div class="done-icon">🎉</div>
+    <h2>Amazing session!</h2>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num" id="done-qs">0</div><div class="stat-lbl">Questions</div></div>
+      <div class="stat"><div class="stat-num" id="done-mins">0</div><div class="stat-lbl">Minutes</div></div>
+    </div>
+    <p>Keep practising every day — fluency is built through repetition. You've got this! 💪</p>
+  </div>
+  <div style="display:flex;gap:10px">
+    <button class="btn btn-out" onclick="goHome()">← Home</button>
+    <button class="btn btn-pri" onclick="restartSolo()">Practice Again ✨</button>
+  </div>
+</div>
+
+<script>
+// ══════ QUESTION BANKS ══════
+const QB = {
+  ielts:[
+    {q:"Describe a person who has had a significant influence on your life.",cat:"ielts"},
+    {q:"Describe a time when you had to learn something new quickly. How did you manage?",cat:"ielts"},
+    {q:"Describe a place you have always wanted to visit and explain why.",cat:"ielts"},
+    {q:"Talk about a book or film that had a big impact on you.",cat:"ielts"},
+    {q:"Describe a tradition in your family or culture that you value.",cat:"ielts"},
+    {q:"Talk about a challenge you faced and how you overcame it.",cat:"ielts"},
+    {q:"Describe an object that is special to you and explain why.",cat:"ielts"},
+    {q:"Describe a time when you helped someone. What did you do?",cat:"ielts"},
+    {q:"Talk about your ideal career. What skills and qualities do you need?",cat:"ielts"},
+    {q:"Describe a time you experienced a different culture. What surprised you?",cat:"ielts"},
+  ],
+  general:[
+    {q:"If you could have any superpower, what would it be and why?",cat:"general"},
+    {q:"What does your perfect day look like from morning to night?",cat:"general"},
+    {q:"What is one habit you have tried to build — and did you succeed?",cat:"general"},
+    {q:"How do social media platforms affect people's self-image?",cat:"general"},
+    {q:"What is something you believe that most people would disagree with?",cat:"general"},
+    {q:"If you could live in any time period in history, when would you choose?",cat:"general"},
+    {q:"What skill do you think everyone should learn in school?",cat:"general"},
+    {q:"How important is it to have hobbies outside of work or study?",cat:"general"},
+    {q:"Would you rather live in a big city or a small town? Why?",cat:"general"},
+    {q:"What is one thing you wish you had known when you were younger?",cat:"general"},
+  ],
+  academic:[
+    {q:"Is technology making us smarter or reducing our capacity to think deeply?",cat:"academic"},
+    {q:"Should higher education be free for everyone? Discuss the pros and cons.",cat:"academic"},
+    {q:"To what extent does where you grow up determine who you become?",cat:"academic"},
+    {q:"Is it ethical to prioritise economic growth over environmental protection?",cat:"academic"},
+    {q:"How should governments balance individual freedoms with public safety?",cat:"academic"},
+    {q:"Does social media help or hinder political participation among young people?",cat:"academic"},
+    {q:"Is remote work beneficial for productivity and society as a whole?",cat:"academic"},
+    {q:"Should artificial intelligence be regulated by governments?",cat:"academic"},
+    {q:"What role should arts and humanities play in a modern university?",cat:"academic"},
+    {q:"Is globalisation good for developing nations or does it create dependency?",cat:"academic"},
+  ]
+};
+QB.all=[...QB.ielts,...QB.general,...QB.academic];
+
+const PEER_TOPICS=[
+  {emoji:"💻",name:"Technology & Us",desc:"How tech shapes our daily life, relationships, and future.",questions:["How has technology changed the way you communicate with people close to you?","Do you think smartphones make us more or less connected to the people around us?","What's one piece of technology you genuinely couldn't live without — and why?","How do you think AI will change jobs and daily life in the next 10 years?"]},
+  {emoji:"✈️",name:"Travel & Culture",desc:"Exploring the world, cultural differences, and what travel teaches us.",questions:["If you could live in any country for one year, where would you choose and why?","Have you ever experienced a moment of culture shock? What happened?","Do you think travelling changes a person? How has it changed you?","What's the most important thing you've learned from experiencing a different culture?"]},
+  {emoji:"🌱",name:"Dreams & Ambitions",desc:"Goals, passion, success, and what drives us forward.",questions:["What does success mean to you personally — not society's definition, yours?","Is there a dream you've put on hold? What's stopping you from pursuing it?","How do you stay motivated when things get really difficult?","If money were no object, how would you spend your time every day?"]},
+  {emoji:"🌍",name:"Climate & Future",desc:"Environment, sustainability, and our responsibility to the planet.",questions:["How worried are you personally about climate change and why?","What changes have you made in your daily life to be more sustainable?","Do you think individuals or governments are more responsible for solving climate change?","What does the world look like in 50 years if we don't act on climate change?"]},
+  {emoji:"📚",name:"Education & Learning",desc:"Schools, self-improvement, and how we learn best.",questions:["What's the most valuable thing you've ever learned — inside or outside the classroom?","Do you think the current school system prepares students for real life? Why or why not?","How do you personally like to learn new things — books, videos, or practice?","If you could design the ideal school, what would it look like?"]},
+  {emoji:"🧠",name:"Mind & Wellbeing",desc:"Mental health, habits, self-awareness, and living well.",questions:["How do you take care of your mental health on a day-to-day basis?","Is there a habit or routine that has genuinely changed your life for the better?","Do you think people talk openly enough about mental health in your culture?","What advice would you give to someone who is feeling overwhelmed or burnt out?"]},
+  {emoji:"💼",name:"Work & Career",desc:"Jobs, ambition, work culture, and the future of work.",questions:["What factors matter most to you when choosing a job — salary, passion, or flexibility?","Do you think working from home is better or worse than going into an office?","Have you ever had a job or task you were passionate about? What made it different?","How do you think the job market will change over the next 20 years?"]},
+  {emoji:"🎨",name:"Arts & Creativity",desc:"Music, art, storytelling, and the role of creativity in life.",questions:["Do you consider yourself a creative person? How does creativity show up in your life?","Has a piece of music, art, or writing ever moved you deeply? Tell me about it.","Do you think creativity is a talent people are born with, or a skill anyone can learn?","Should governments fund arts and culture? Why or why not?"]},
+  {emoji:"🤝",name:"Relationships & Society",desc:"Friendship, family, social dynamics, and how we connect.",questions:["What qualities do you value most in a close friend?","How has social media changed the way we form and maintain relationships?","Do you think people are becoming more or less kind to strangers? Why?","What's one thing you wish society was better at, and how would you change it?"]},
+];
+
+// ══════ STATE ══════
+const S={
+  mode:'solo',cat:'all',peerMode:'interview',
+  phase:'idle',timer:null,secsLeft:0,totalSecs:0,
+  qNum:0,usedIdx:[],currentQ:null,
+  sessionQs:0,
+  currentTopic:null,peerQIdx:0,peerTurn:'A',
+  peerTimer:null,peerPhase:'idle',
+};
+const PREP=60,SPEAK=120;
+
+// ══════ DARK MODE ══════
+function toggleDark(){
+  const h=document.documentElement;
+  const d=h.dataset.theme==='dark';
+  h.dataset.theme=d?'light':'dark';
+  document.querySelector('.toggle-btn').textContent=d?'🌙 Dark':'☀️ Light';
+}
+
+// ══════ NAV ══════
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
+function goHome(){clearTimers();show('home')}
+function goSetup(m){S.mode=m;S.cat='all';document.querySelectorAll('[data-cat]').forEach(c=>c.classList.remove('active'));document.querySelector('[data-cat="all"]').classList.add('active');show('setup')}
+
+function goPeerSetup(){
+  S.peerMode='interview';
+  document.querySelectorAll('[data-pmode]').forEach(c=>c.classList.remove('active'));
+  document.querySelector('[data-pmode="interview"]').classList.add('active');
+  document.getElementById('topic-grid').innerHTML=PEER_TOPICS.map((t,i)=>`
+    <div class="topic-card" onclick="startPeerTopic(${i})">
+      <div class="tc-icon">${t.emoji}</div>
+      <div class="tc-name">${t.name}</div>
+      <div class="tc-count">4 questions</div>
+    </div>`).join('');
+  show('peer-setup');
+}
+
+function selCat(el){document.querySelectorAll('[data-cat]').forEach(c=>c.classList.remove('active'));el.classList.add('active');S.cat=el.dataset.cat}
+function selPMode(el){document.querySelectorAll('[data-pmode]').forEach(c=>c.classList.remove('active'));el.classList.add('active');S.peerMode=el.dataset.pmode}
+
+// ══════ LOTTERY ══════
+function goLottery(){
+  show('lottery');
+  const el_loader=document.getElementById('spin-loader');
+  const el_badge=document.getElementById('spin-badge');
+  const el_qlabel=document.getElementById('spin-q-label');
+  const el_text=document.getElementById('spin-text');
+  const el_spark=document.getElementById('spin-sparkle');
+  const el_btn=document.getElementById('spin-btn');
+  el_loader.style.display='block';
+  el_badge.style.display='none';
+  el_qlabel.style.display='none';
+  el_text.style.display='none';
+  el_spark.classList.remove('show');
+  el_btn.classList.remove('show');
+  el_text.classList.remove('revealed');
+
+  const pool=QB[S.cat]||QB.all;
+  const available=pool.filter((_,i)=>!S.usedIdx.includes(i));
+  const usePool=available.length?available:pool;
+  const chosen=usePool[Math.floor(Math.random()*usePool.length)];
+  S.currentQ=chosen;
+  const allTexts=QB.all.map(q=>q.q);
+  let count=0,interval=70;
+  const TOTAL=24;
+
+  setTimeout(()=>{
+    el_loader.style.display='none';
+    el_text.style.display='flex';
+    function flash(){
+      if(count<TOTAL){
+        el_text.textContent=allTexts[Math.floor(Math.random()*allTexts.length)];
+        el_text.classList.add('flipping');
+        count++;
+        if(count>16) interval=150;
+        if(count>20) interval=300;
+        setTimeout(flash,interval);
+      } else { revealQ(chosen); }
+    }
+    flash();
+  },700);
+}
+
+function magicReveal(){
+  try{
+    if(!_ac) _ac=new(window.AudioContext||window.webkitAudioContext)();
+    const ctx=_ac;
+    // Ascending sparkle arpeggio — C major pentatonic glissando
+    const notes=[261,329,392,523,659,784,880,1046,1318,1568];
+    notes.forEach((freq,i)=>{
+      const t=ctx.currentTime + i*0.06;
+      // Main note
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type='sine'; osc.frequency.value=freq;
+      gain.gain.setValueAtTime(0,t);
+      gain.gain.linearRampToValueAtTime(0.22,t+0.03);
+      gain.gain.exponentialRampToValueAtTime(0.001,t+0.45);
+      osc.start(t); osc.stop(t+0.5);
+      // Shimmer overtone
+      const osc2=ctx.createOscillator();
+      const gain2=ctx.createGain();
+      osc2.connect(gain2); gain2.connect(ctx.destination);
+      osc2.type='triangle'; osc2.frequency.value=freq*2.01;
+      gain2.gain.setValueAtTime(0,t);
+      gain2.gain.linearRampToValueAtTime(0.07,t+0.02);
+      gain2.gain.exponentialRampToValueAtTime(0.001,t+0.35);
+      osc2.start(t); osc2.stop(t+0.4);
+    });
+    // Final big "ta-daa" chord at the end
+    const chordT=ctx.currentTime+notes.length*0.06+0.05;
+    [523,659,784,1046].forEach((freq,i)=>{
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type='sine'; o.frequency.value=freq;
+      g.gain.setValueAtTime(0,chordT);
+      g.gain.linearRampToValueAtTime(0.18-i*0.03,chordT+0.04);
+      g.gain.exponentialRampToValueAtTime(0.001,chordT+1.1);
+      o.start(chordT); o.stop(chordT+1.2);
+    });
+  }catch(e){}
+}
+
+function revealQ(q){
+  magicReveal();
+  const badges={ielts:'📝 IELTS',general:'💬 General English',academic:'🎓 Academic'};
+  const el_badge=document.getElementById('spin-badge');
+  el_badge.textContent=badges[q.cat]||'🎲 Mixed';
+  el_badge.style.display='inline-block';
+  const el_qlabel=document.getElementById('spin-q-label');
+  el_qlabel.style.display='block';
+  const el_text=document.getElementById('spin-text');
+  el_text.textContent=q.q;
+  el_text.classList.remove('flipping');
+  el_text.classList.add('revealed');
+  document.getElementById('spin-sparkle').classList.add('show');
+  document.getElementById('spin-btn').classList.add('show');
+}
+
+function startSolo(){
+  S.qNum=1;S.phase='idle';S.sessionQs=0;
+  show('practice');
+  renderQ();
+}
+
+// ══════ SOLO QUESTION ══════
+function pickQ(){
+  const pool=QB[S.cat]||QB.all;
+  let avail=pool.filter((_,i)=>!S.usedIdx.includes(i));
+  if(!avail.length){S.usedIdx=[];avail=pool;}
+  const i=Math.floor(Math.random()*avail.length);
+  S.usedIdx.push(i);
+  return avail[i];
+}
+
+function renderQ(useExisting){
+  const q=useExisting?S.currentQ:pickQ();
+  if(!useExisting) S.currentQ=q;
+  const labels={ielts:'📝 IELTS',general:'💬 General',academic:'🎓 Academic'};
+  document.getElementById('qnum').textContent='Q '+S.qNum;
+  const cat=document.getElementById('q-cat');
+  cat.textContent=labels[q.cat]||'🎲';
+  document.getElementById('q-text').textContent=q.q;
+  resetTimerUI();
+  document.getElementById('btn-next').style.display='none';
+  document.getElementById('btn-main').style.display='';
+  document.getElementById('btn-main').textContent='▶ Start Prep';
+  document.getElementById('btn-main').className='btn btn-pri';
+  document.getElementById('btn-main').onclick=startPrep;
+  document.getElementById('btn-skip').style.display='';
+}
+
+// ══════ SOLO TIMER ══════
+function setTimerFace(face,min,sec,ph,state,lbl,colon='t-colon'){
+  document.getElementById(face).className='timer-face ph-'+ph;
+  document.getElementById(min).textContent=String(Math.floor(S.secsLeft/60)).padStart(2,'0');
+  document.getElementById(sec).textContent=String(S.secsLeft%60).padStart(2,'0');
+  document.getElementById(colon).className='t-colon'+(ph==='idle'?' no-blink':'');
+}
+
+function resetTimerUI(){
+  clearTimers();S.phase='idle';S.secsLeft=PREP;
+  const f=document.getElementById('timer-face');
+  f.className='timer-face ph-idle';
+  document.getElementById('t-min').textContent='01';
+  document.getElementById('t-sec').textContent='00';
+  document.getElementById('t-colon').className='t-colon no-blink';
+  document.getElementById('phase-lbl').textContent='GET READY';
+  document.getElementById('phase-state').textContent='Press Start Prep to begin';
+}
+
+function startPrep(){
+  S.phase='prep';S.secsLeft=PREP;S.totalSecs=PREP;
+  document.getElementById('timer-face').className='timer-face ph-prep';
+  document.getElementById('t-colon').className='t-colon';
+  document.getElementById('phase-lbl').textContent='📖 PREP TIME';
+  document.getElementById('phase-state').textContent='Think & plan your answer';
+  document.getElementById('btn-main').textContent='Skip to Speaking ▶';
+  document.getElementById('btn-main').onclick=skipPhase;
+  document.getElementById('btn-skip').style.display='none';
+  runTimer('solo',PREP,'prep',startSpeak);
+}
+
+function startSpeak(){
+  beep(1);
+  S.phase='speak';S.secsLeft=SPEAK;S.totalSecs=SPEAK;
+  document.getElementById('timer-face').className='timer-face ph-speak';
+  document.getElementById('phase-lbl').textContent='🎙 SPEAKING TIME';
+  document.getElementById('phase-state').textContent='Go! Speak clearly & confidently';
+  document.getElementById('btn-main').textContent='✕ End Early';
+  document.getElementById('btn-main').className='btn btn-red';
+  document.getElementById('btn-main').onclick=()=>{clearTimers();finishQ()};
+  runTimer('solo',SPEAK,'speak',finishQ);
+}
+
+function runTimer(which,total,ph,cb){
+  clearTimers();
+  const minId=which==='solo'?'t-min':'peer-t-min';
+  const secId=which==='solo'?'t-sec':'peer-t-sec';
+  const faceId=which==='solo'?'timer-face':'peer-timer-face';
+  const iv=setInterval(()=>{
+    S.secsLeft--;
+    document.getElementById(minId).textContent=String(Math.floor(S.secsLeft/60)).padStart(2,'0');
+    document.getElementById(secId).textContent=String(S.secsLeft%60).padStart(2,'0');
+    if(S.secsLeft<=0){clearInterval(iv);cb();}
+  },1000);
+  if(which==='solo') S.timer=iv; else S.peerTimer=iv;
+}
+
+function skipPhase(){
+  clearTimers();
+  if(S.phase==='idle'||S.phase==='prep') startSpeak();
+  else if(S.phase==='speak') finishQ();
+}
+
+function finishQ(){
+  beep(2);clearTimers();S.phase='done';S.sessionQs++;
+  document.getElementById('timer-face').className='timer-face ph-done';
+  document.getElementById('t-colon').className='t-colon no-blink';
+  document.getElementById('t-min').textContent='00';
+  document.getElementById('t-sec').textContent='00';
+  document.getElementById('phase-lbl').textContent='✅ DONE!';
+  document.getElementById('phase-state').textContent='Great job! Ready for next?';
+  document.getElementById('btn-main').style.display='none';
+  document.getElementById('btn-skip').style.display='none';
+  document.getElementById('btn-next').style.display='';
+}
+
+function nextQ(){S.qNum++;document.getElementById('btn-main').style.display='';document.getElementById('btn-main').className='btn btn-pri';goLottery()}
+function confirmBack(){if(S.phase==='idle'||S.phase==='done'){goSetup('solo');return;}if(confirm('Stop this session and go back?')){clearTimers();goSetup('solo')}}
+
+// ══════ PEER ══════
+function startPeerTopic(idx){
+  S.currentTopic=PEER_TOPICS[idx];S.peerQIdx=0;S.peerTurn='A';S.peerPhase='idle';S.sessionQs=0;
+  document.getElementById('topic-title').textContent=S.currentTopic.emoji+' '+S.currentTopic.name;
+  document.getElementById('topic-desc').textContent=S.currentTopic.desc;
+  renderPeerQs();updateTurnStrip();resetPeerTimer();
+  document.getElementById('peer-btn-next').style.display='none';
+  document.getElementById('peer-btn-main').style.display='';
+  document.getElementById('peer-btn-main').className='btn btn-pri';
+  document.getElementById('peer-btn-main').textContent='▶ Start Prep';
+  document.getElementById('peer-btn-main').onclick=peerStartPrep;
+  show('peer-practice');
+}
+
+function renderPeerQs(){
+  const qs=S.currentTopic.questions;
+  document.getElementById('peer-q-list').innerHTML=qs.map((q,i)=>{
+    let cls='q-item';
+    if(i===S.peerQIdx) cls+=' active';
+    else if(i<S.peerQIdx) cls+=' done-q';
+    return`<div class="${cls}"><div class="q-num">${i<S.peerQIdx?'✓':(i+1)}</div><div class="q-item-text">${q}</div></div>`;
+  }).join('');
+  document.getElementById('peer-qnum').textContent=`Q ${S.peerQIdx+1} / ${qs.length}`;
+}
+
+function updateTurnStrip(){
+  const s=document.getElementById('turn-strip');
+  if(S.peerMode==='discussion'){s.className='turn-strip ts-discuss';s.innerHTML='💬 Discussion — both students share their view';}
+  else if(S.peerTurn==='A'){s.className='turn-strip ts-speaker';s.innerHTML='🎤 <strong>Speaker A</strong> — answer this question';}
+  else{s.className='turn-strip ts-host';s.innerHTML='🔄 <strong>Speaker B</strong> — now it\'s your turn!';}
+}
+
+function resetPeerTimer(){
+  clearTimers();S.peerPhase='idle';S.secsLeft=PREP;
+  document.getElementById('peer-timer-face').className='timer-face ph-idle';
+  document.getElementById('peer-t-min').textContent='01';
+  document.getElementById('peer-t-sec').textContent='00';
+  document.getElementById('peer-t-colon').className='t-colon no-blink';
+  document.getElementById('peer-phase-lbl').textContent='GET READY';
+  document.getElementById('peer-phase-state').textContent='Press Start Prep to begin';
+}
+
+function peerStartPrep(){
+  S.peerPhase='prep';S.secsLeft=PREP;
+  document.getElementById('peer-timer-face').className='timer-face ph-prep';
+  document.getElementById('peer-t-colon').className='t-colon';
+  document.getElementById('peer-phase-lbl').textContent='📖 PREP TIME';
+  document.getElementById('peer-phase-state').textContent='Think & plan your answer';
+  document.getElementById('peer-btn-main').textContent='Skip to Speaking ▶';
+  document.getElementById('peer-btn-main').onclick=peerSkip;
+  runTimer('peer',PREP,'prep',peerStartSpeak);
+}
+
+function peerStartSpeak(){
+  beep(1);S.peerPhase='speak';S.secsLeft=SPEAK;
+  document.getElementById('peer-timer-face').className='timer-face ph-speak';
+  document.getElementById('peer-phase-lbl').textContent='🎙 SPEAKING TIME';
+  document.getElementById('peer-phase-state').textContent='Go! Speak clearly & confidently';
+  document.getElementById('peer-btn-main').textContent='✕ End Early';
+  document.getElementById('peer-btn-main').className='btn btn-red';
+  document.getElementById('peer-btn-main').onclick=()=>{clearTimers();peerFinish()};
+  runTimer('peer',SPEAK,'speak',peerFinish);
+}
+
+function peerSkip(){clearTimers();if(S.peerPhase==='idle'||S.peerPhase==='prep') peerStartSpeak();else if(S.peerPhase==='speak') peerFinish()}
+
+function peerFinish(){
+  beep(2);clearTimers();S.peerPhase='done';S.sessionQs++;
+  document.getElementById('peer-timer-face').className='timer-face ph-done';
+  document.getElementById('peer-t-colon').className='t-colon no-blink';
+  document.getElementById('peer-t-min').textContent='00';
+  document.getElementById('peer-t-sec').textContent='00';
+  document.getElementById('peer-phase-lbl').textContent='✅ DONE!';
+  document.getElementById('peer-phase-state').textContent='Great job!';
+  document.getElementById('peer-btn-main').style.display='none';
+  const qs=S.currentTopic.questions;
+  const isInt=S.peerMode==='interview';
+  if(isInt&&S.peerTurn==='A'){
+    show_peer_next('🔄 Swap to Speaker B',peerSwap);
+  } else if(S.peerQIdx<qs.length-1){
+    show_peer_next('Next Question →',peerNext);
+  } else {
+    show_peer_next('🎉 Finish Session',endSession);
+  }
+}
+
+function show_peer_next(txt,fn){const b=document.getElementById('peer-btn-next');b.style.display='';b.textContent=txt;b.onclick=fn}
+
+function peerSwap(){
+  S.peerTurn='B';updateTurnStrip();resetPeerTimer();
+  document.getElementById('peer-btn-next').style.display='none';
+  document.getElementById('peer-btn-main').style.display='';
+  document.getElementById('peer-btn-main').className='btn btn-pri';
+  document.getElementById('peer-btn-main').textContent='▶ Start Prep';
+  document.getElementById('peer-btn-main').onclick=peerStartPrep;
+}
+
+function peerNext(){
+  S.peerQIdx++;S.peerTurn='A';
+  renderPeerQs();updateTurnStrip();resetPeerTimer();
+  document.getElementById('peer-btn-next').style.display='none';
+  document.getElementById('peer-btn-main').style.display='';
+  document.getElementById('peer-btn-main').className='btn btn-pri';
+  document.getElementById('peer-btn-main').textContent='▶ Start Prep';
+  document.getElementById('peer-btn-main').onclick=peerStartPrep;
+}
+
+function confirmBackPeer(){if(S.peerPhase==='idle'||S.peerPhase==='done'){goPeerSetup();return;}if(confirm('Stop this session and go back?')){clearTimers();goPeerSetup()}}
+
+// ══════ SESSION END ══════
+function endSession(){
+  clearTimers();
+  document.getElementById('done-qs').textContent=S.sessionQs;
+  document.getElementById('done-mins').textContent=Math.max(1,S.sessionQs*3);
+  show('done');
+}
+function restartSolo(){S.usedIdx=[];goSetup('solo')}
+
+// ══════ UTILS ══════
+function clearTimers(){clearInterval(S.timer);clearInterval(S.peerTimer);S.timer=null;S.peerTimer=null}
+
+let _ac;
+function beep(n=1){
+  try{
+    if(!_ac) _ac=new(window.AudioContext||window.webkitAudioContext)();
+    for(let i=0;i<n;i++){
+      const o=_ac.createOscillator(),g=_ac.createGain();
+      o.connect(g);g.connect(_ac.destination);
+      o.type='sine';o.frequency.value=n===1?880:660;
+      const t=_ac.currentTime+i*.4;
+      g.gain.setValueAtTime(.4,t);g.gain.exponentialRampToValueAtTime(.001,t+.35);
+      o.start(t);o.stop(t+.35);
+    }
+  }catch(e){}
+}
+</script>
+</body>
+</html>
