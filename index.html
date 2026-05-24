@@ -764,11 +764,10 @@ async function signInGoogle(){
     const provider=new firebase.auth.GoogleAuthProvider();
     const result=await auth.signInWithPopup(provider);
     const user=result.user;
-    const hasPhone=await ensureProfile(user);
+    await ensureProfile(user);
     updateHeaderUser(user);
     updateHomeGreeting(user);
-    if(!hasPhone){show('phone-screen');}
-    else{show('home');}
+    show('home');
   }catch(e){
     alert('Sign-in failed: '+e.message);
   }
